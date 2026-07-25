@@ -1,0 +1,6 @@
+{
+  "name": "@clothes-catalogue/dtos",
+  "exports": {
+    ".": "./index.ts"
+  }
+}
