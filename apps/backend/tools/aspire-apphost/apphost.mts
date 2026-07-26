@@ -21,7 +21,7 @@ const db = await sql.addDatabase('clothes-catalogue');
 const cache = await builder.addRedis('cache');
 
 await builder
-  .addJavaScriptApp('backend', '../..', { runScriptName: 'start' })
+  .addJavaScriptApp('backend', '../..', { runScriptName: 'nest:start' })
   .withReference(db)
   .withReference(cache)
   .waitFor(db)
