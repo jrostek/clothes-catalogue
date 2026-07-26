@@ -8,12 +8,23 @@ const builder = await createBuilder();
 const sqlUserName = builder.addParameter('sqlUserName', { value: 'asia' });
 const sqlPassword = builder.addParameter('sqlPassword', { secret: true });
 
-await builder
+const sql = await builder
   .addPostgres('sql', {
     userName: sqlUserName,
     password: sqlPassword,
   })
   .withPersistentLifetime()
   .withDataVolume();
+
+const db = await sql.addDatabase('clothes-catalogue');
+
+const cache = await builder.addRedis('cache');
+
+await builder
+  .addJavaScriptApp('backend', '../..', { runScriptName: 'start' })
+  .withReference(db)
+  .withReference(cache)
+  .waitFor(db)
+  .waitFor(cache);
 
 await builder.build().run();
