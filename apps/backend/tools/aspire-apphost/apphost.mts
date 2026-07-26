@@ -22,6 +22,11 @@ const cache = await builder.addRedis('cache');
 
 await builder
   .addJavaScriptApp('backend', '../..', { runScriptName: 'nest:start' })
+  .withHttpEndpoint({ name: 'http', env: 'PORT' })
+  .withUrlForEndpoint('http', async (url) => {
+    url.displayText = 'Swagger UI';
+    url.url = '/swagger';
+  })
   .withReference(db)
   .withReference(cache)
   .waitFor(db)
