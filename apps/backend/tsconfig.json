@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
-  "files": ["./src/prisma/contract.json"],
+  "files": [],
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",

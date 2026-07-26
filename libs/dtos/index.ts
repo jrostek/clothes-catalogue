@@ -1,1 +1,1 @@
-export type { CreateImageDto } from './images/create-image.dto'
+export type { CreateImageDto } from "./images/create-image.dto.js";
