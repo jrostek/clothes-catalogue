@@ -10,9 +10,19 @@
     "jest": "~30.3.0",
     "metro-config": "~0.83.0",
     "metro-resolver": "~0.83.0",
-    "nx": "23.1.0"
+    "nx": "23.1.0",
+    "typescript": "~7.0.2"
   },
   "workspaces": [
-    "apps/*", "libs/*"
-  ]
+    "apps/*",
+    "libs/*"
+  ],
+  "overrides": {
+    "ts-jest": {
+      "typescript": "$typescript"
+    },
+    "typescript-eslint": {
+      "typescript": "$typescript"
+    }
+  }
 }
