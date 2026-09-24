@@ -12,10 +12,6 @@
     "metro-resolver": "~0.83.0",
     "nx": "23.1.0"
   },
-  "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
-  },
   "workspaces": [
     "apps/*", "libs/*"
   ]
