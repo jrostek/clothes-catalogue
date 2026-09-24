@@ -1,0 +1,13 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "cjs"
+  // Extensionless relative imports, so Jest (@swc/jest) resolves the .ts sources
+  importFileExtension = ""
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Add models below, then run `npm run prisma:migrate:dev -- --name <change>`.

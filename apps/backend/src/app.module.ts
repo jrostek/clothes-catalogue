@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './controllers/app.controller';
 import { AppService } from './services/app.service';
+import { PrismaService } from './services/prisma.service';
 import { ImagesController } from './controllers/images.controller';
 import { isSwaggerRequest } from './swagger';
 
@@ -12,6 +13,6 @@ import { isSwaggerRequest } from './swagger';
     }),
   ],
   controllers: [AppController, ImagesController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}
