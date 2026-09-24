@@ -12,12 +12,20 @@ import { DatabaseService } from './services/database.service';
 import { CacheController } from './controllers/cache.controller';
 import { CacheService } from './services/cache.service';
 import { cacheModuleOptions } from './cache';
+import { HealthController } from './controllers/health.controller';
+import { HealthService } from './services/health.service';
+import { isHealthRequest } from './health';
 import { isSwaggerRequest } from './swagger';
 
 @Module({
   imports: [
     LoggerModule.forRoot({
-      pinoHttp: { autoLogging: { ignore: (req) => isSwaggerRequest(req.url) } },
+      pinoHttp: {
+        autoLogging: {
+          ignore: (req) =>
+            isSwaggerRequest(req.url) || isHealthRequest(req.url),
+        },
+      },
     }),
     // Global, so any provider can inject CACHE_MANAGER.
     CacheModule.registerAsync({
@@ -30,6 +38,7 @@ import { isSwaggerRequest } from './swagger';
     ImagesController,
     DatabaseController,
     CacheController,
+    HealthController,
   ],
   providers: [
     // Validates @Body(), @Query() and @Param() against their createZodDto schemas.
@@ -38,6 +47,7 @@ import { isSwaggerRequest } from './swagger';
     PrismaService,
     DatabaseService,
     CacheService,
+    HealthService,
   ],
 })
 export class AppModule {}
