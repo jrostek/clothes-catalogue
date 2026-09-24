@@ -4,9 +4,7 @@
   "private": true,
   "devDependencies": {
     "@expo/cli": "~56.1.14",
-    "@nx/eslint": "23.1.0",
     "@nx/jest": "23.1.0",
-    "eslint": "^9.8.0",
     "jest": "~30.3.0",
     "metro-config": "~0.83.0",
     "metro-resolver": "~0.83.0",
@@ -18,10 +16,5 @@
   "workspaces": [
     "apps/*",
     "libs/*"
-  ],
-  "overrides": {
-    "typescript-eslint": {
-      "typescript": "$typescript"
-    }
-  }
+  ]
 }
