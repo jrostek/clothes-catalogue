@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Layout
 
-npm-workspaces monorepo (`apps/*`, `libs/*`) with Nx on top (`@nx/eslint` and `@nx/jest` plugins infer `lint`/`test` targets). TypeScript project references are wired from the root `tsconfig.json`; shared compiler options live in `tsconfig.base.json`.
+npm-workspaces monorepo (`apps/*`, `libs/*`) with Nx on top: the `@nx/jest` plugin infers `test`, and every other target (`lint`, `typecheck`, …) comes from the package scripts. TypeScript project references (backend, dtos) are wired from the root `tsconfig.json`; shared compiler options live in `tsconfig.base.json`. The frontend is not a reference, since Expo's tsconfig isn't composite.
+
+**Toolchain.** TypeScript `~7.0.2` (the native Go compiler) is a single root devDependency; it ships only the `tsc` binary, no legacy JS API, so tools that load TypeScript as a library (typescript-eslint, ts-jest, ts-node) are not used. Linting is oxlint + oxlint-tsgolint (type-aware rules on TypeScript 7), configured by the root `.oxlintrc.json` that each project's `.oxlintrc.json` extends. Prettier is the formatter. `@nestjs/cli` still bundles its own TypeScript 6 copy; nothing in the build uses it. `apps/backend/tools/aspire-apphost` is a separate npm project with its own lockfile, not a workspace — run `npm install` there too.
 
 - `apps/backend` — NestJS 11 API (`@clothes-catalogue/backend`), Swagger UI at `/swagger`, listens on `PORT` (default 3000).
 - `apps/backend/tools/aspire-apphost` — Aspire TypeScript AppHost that orchestrates the local dev stack.
@@ -13,7 +15,7 @@ npm-workspaces monorepo (`apps/*`, `libs/*`) with Nx on top (`@nx/eslint` and `@
 
 ## Commands
 
-Install once from the repo root: `npm install`.
+Install once from the repo root: `npm install`. Across all projects: `npx nx run-many -t typecheck lint test`.
 
 ### Backend (`apps/backend`)
 
@@ -23,17 +25,23 @@ The unprefixed scripts (`start`, `dev`, `build`, `lint`, `format`) do **not** ru
 |---|---|
 | Full local stack (Postgres + Redis + backend) via Aspire | `npm run dev` (needs the `aspire` CLI; runs `aspire run`) |
 | Nest only, watch mode | `npm run nest:start:dev` |
-| Build Nest | `npm run nest:build` |
-| Lint Nest sources (auto-fixes) | `npm run nest:lint` |
+| Build Nest (SWC, no typecheck) | `npm run nest:build` |
+| Typecheck (`tsc -b`, TypeScript 7) | `npm run typecheck` |
+| Lint Nest sources (oxlint, auto-fixes) | `npm run nest:lint` |
+| Check formatting (Prettier) | `npm run nest:format:check` |
 | Lint the AppHost | `npm run lint` |
 | Unit tests | `npm test` |
 | Single test file | `npx jest path/to/file.spec.ts` or `npx jest -t "test name"` |
 
-Jest config lives inline in `apps/backend/package.json` (`rootDir: src`, `*.spec.ts`, ts-jest). No spec files exist yet, and `test:e2e` points at a `test/jest-e2e.json` that does not exist yet.
+Nest compiles with its SWC builder (`nest-cli.json`: `builder.type: "swc"`, `typeCheck: false`; decorator metadata is kept on in `.swcrc`, which Nest DI needs), so `nest build`/`nest start` never report type errors — run `npm run typecheck`. Jest 30 config lives inline in `apps/backend/package.json` (`rootDir: src`, `*.spec.ts`, transformed by `@swc/jest`). There are no e2e tests.
+
+`npm run dev` needs Docker and a value for the secret parameter `sqlPassword`: set it once with `aspire secret set Parameters:sqlPassword <value>` in `tools/aspire-apphost`, or pass `Parameters__sqlPassword` as an env var. The Postgres container and its data volume are persistent, so the password must stay the same across runs.
 
 ### Frontend (`apps/frontend`)
 
-`npm start` (Expo dev server), `npm run web` / `android` / `ios`, `npm run lint` (`expo lint`). From the root: `npm -w @clothes-catalogue/frontend run <script>`.
+`npm start` (Expo dev server), `npm run web` / `android` / `ios`, `npm run lint` (oxlint with react, react-hooks, jsx-a11y and import plugins), `npm run typecheck` (`tsc --noEmit`). From the root: `npm -w @clothes-catalogue/frontend run <script>`. Metro compiles with Babel, so TypeScript 7 only affects typechecking. In VS Code, use the TypeScript 7 native language service (see `apps/frontend/.vscode/extensions.json`).
+
+Known issue: the root devDependencies pin `@expo/cli` ~56 / metro 0.83 while the app is on Expo 57, and the hoisted Expo CLI cannot resolve `expo-router` (installed under `apps/frontend/node_modules`). `expo start` crashes with `Cannot find module 'expo-router/_ctx-shared'`.
 
 ## Architecture notes
 

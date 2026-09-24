@@ -1,1 +1,8 @@
-{ "recommendations": ["expo.vscode-expo-tools"] }
+{
+  // The repo compiles with TypeScript 7 (the native Go compiler). VS Code's
+  // bundled TypeScript language service is an older 5.x/6.x build, so install
+  // the TypeScript 7 native language service (TypeScriptTeam.native-preview)
+  // and enable it with "typescript.experimental.useTsgo": true, or at least
+  // pick "TypeScript: Select TypeScript Version" > "Use Workspace Version".
+  "recommendations": ["expo.vscode-expo-tools", "TypeScriptTeam.native-preview"]
+}
