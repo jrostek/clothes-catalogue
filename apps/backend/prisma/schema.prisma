@@ -11,3 +11,10 @@ datasource db {
 }
 
 // Add models below, then run `npm run prisma:migrate:dev -- --name <change>`.
+
+// Test table behind the /database endpoints, for checking the connection end to end.
+model ConnectionProbe {
+  id        Int      @id @default(autoincrement())
+  message   String
+  createdAt DateTime @default(now())
+}
