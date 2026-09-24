@@ -3,6 +3,7 @@ import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { NestInstrumentation } from '@opentelemetry/instrumentation-nestjs-core';
 import { PinoInstrumentation } from '@opentelemetry/instrumentation-pino';
+import { isSwaggerRequest } from './swagger';
 
 // Must be imported before anything that loads http, express, Nest or pino, so
 // the instrumentations can patch them. Pino records are exported as OTLP logs
@@ -15,9 +16,7 @@ if (process.env.OTEL_EXPORTER_OTLP_ENDPOINT) {
   const sdk = new NodeSDK({
     instrumentations: [
       new HttpInstrumentation({
-        // Swagger UI and its assets (/swagger, /swagger/*, /swagger-json).
-        ignoreIncomingRequestHook: (req) =>
-          req.url?.startsWith('/swagger') ?? false,
+        ignoreIncomingRequestHook: (req) => isSwaggerRequest(req.url),
       }),
       new ExpressInstrumentation(),
       new NestInstrumentation(),
