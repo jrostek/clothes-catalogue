@@ -9,12 +9,12 @@
     "jest": "~30.3.0",
     "nx": "23.1.0"
   },
-  "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
-  },
   "workspaces": [
     "apps/*",
     "libs/*"
-  ]
+  ],
+  "overrides": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  }
 }
