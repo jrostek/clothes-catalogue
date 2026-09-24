@@ -1,7 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
-import type * as shared from '@clothes-catalogue/dtos';
+import { createZodDto } from 'nestjs-zod';
+import { createImageSchema } from '@clothes-catalogue/dtos';
 
-export class CreateImageDto implements shared.CreateImageDto {
-  @ApiProperty({ example: 'Blue denim jacket' })
-  name!: string;
-}
+export class CreateImageDto extends createZodDto(createImageSchema) {}

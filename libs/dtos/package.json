@@ -1,9 +1,13 @@
 {
   "name": "@clothes-catalogue/dtos",
+  "type": "module",
   "exports": {
     ".": "./index.ts"
   },
   "scripts": {
     "typecheck": "tsc -b"
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
   }
 }

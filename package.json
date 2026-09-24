@@ -8,7 +8,8 @@
     "nx": "23.1.0",
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2003",
-    "typescript": "~7.0.2"
+    "typescript": "~7.0.2",
+    "zod": "^4.6.5"
   },
   "workspaces": [
     "apps/*",

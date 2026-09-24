@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { APP_PIPE } from '@nestjs/core';
+import { ZodValidationPipe } from 'nestjs-zod';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './controllers/app.controller';
 import { AppService } from './services/app.service';
@@ -15,6 +17,12 @@ import { isSwaggerRequest } from './swagger';
     }),
   ],
   controllers: [AppController, ImagesController, DatabaseController],
-  providers: [AppService, PrismaService, DatabaseService],
+  providers: [
+    // Validates @Body(), @Query() and @Param() against their createZodDto schemas.
+    { provide: APP_PIPE, useClass: ZodValidationPipe },
+    AppService,
+    PrismaService,
+    DatabaseService,
+  ],
 })
 export class AppModule {}
