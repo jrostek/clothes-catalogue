@@ -14,7 +14,11 @@ import { PinoInstrumentation } from '@opentelemetry/instrumentation-pino';
 if (process.env.OTEL_EXPORTER_OTLP_ENDPOINT) {
   const sdk = new NodeSDK({
     instrumentations: [
-      new HttpInstrumentation(),
+      new HttpInstrumentation({
+        // Swagger UI and its assets (/swagger, /swagger/*, /swagger-json).
+        ignoreIncomingRequestHook: (req) =>
+          req.url?.startsWith('/swagger') ?? false,
+      }),
       new ExpressInstrumentation(),
       new NestInstrumentation(),
       new PinoInstrumentation(),
