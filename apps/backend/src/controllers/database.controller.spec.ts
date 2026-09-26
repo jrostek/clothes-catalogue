@@ -1,7 +1,4 @@
-import {
-  BadRequestException,
-  ServiceUnavailableException,
-} from '@nestjs/common';
+import { ServiceUnavailableException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseService } from '../services/database.service';
 import { DatabaseController } from './database.controller';
@@ -35,12 +32,6 @@ describe('DatabaseController', () => {
   });
 
   describe('createProbe', () => {
-    it('rejects an empty message', () => {
-      expect(() => databaseController.createProbe({ message: ' ' })).toThrow(
-        BadRequestException,
-      );
-    });
-
     it('creates a probe with the given message', async () => {
       databaseService.createProbe.mockResolvedValue({ id: 1 });
 

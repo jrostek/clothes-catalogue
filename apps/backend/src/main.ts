@@ -2,6 +2,7 @@ import './instrumentation';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { Logger } from 'nestjs-pino';
+import { cleanupOpenApiDoc } from 'nestjs-zod';
 import { AppModule } from './app.module';
 import { SWAGGER_PATH } from './swagger';
 
@@ -16,7 +17,9 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
 
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  // cleanupOpenApiDoc turns the createZodDto schemas into proper OpenAPI models.
+  const documentFactory = () =>
+    cleanupOpenApiDoc(SwaggerModule.createDocument(app, config));
   SwaggerModule.setup(SWAGGER_PATH, app, documentFactory);
 
   await app.listen(process.env.PORT ?? 3000);

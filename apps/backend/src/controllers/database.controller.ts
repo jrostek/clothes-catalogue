@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -49,13 +48,10 @@ export class DatabaseController {
 
   @Post('probes')
   @ApiCreatedResponse({ type: ConnectionProbeDto })
-  @ApiBadRequestResponse({ description: 'message is missing or empty' })
+  @ApiBadRequestResponse({ description: 'Body fails schema validation' })
   createProbe(
     @Body() body: CreateConnectionProbeDto,
   ): Promise<ConnectionProbeDto> {
-    if (typeof body?.message !== 'string' || body.message.trim() === '') {
-      throw new BadRequestException('message must be a non-empty string');
-    }
     return this.databaseService.createProbe(body.message);
   }
 }
