@@ -14,6 +14,11 @@
     "nest:start:debug": "nest start --debug --watch",
     "nest:start:prod": "node dist/main",
     "nest:lint": "oxlint --fix src",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "postprisma:migrate:dev": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
     "start": "npm --prefix ./tools/aspire-apphost run dev",
     "dev": "npm --prefix ./tools/aspire-apphost run dev",
     "build": "npm --prefix ./tools/aspire-apphost run build",
@@ -23,7 +28,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk ../../node_modules/jest/bin/jest.js --runInBand",
-    "typecheck": "node ../../node_modules/typescript/bin/tsc -b"
+    "typecheck": "node ../../node_modules/typescript/bin/tsc -b",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clothes-catalogue/dtos": "*",
@@ -80,6 +86,10 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/generated/"
+    ]
   }
 }

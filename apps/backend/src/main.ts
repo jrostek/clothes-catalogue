@@ -8,6 +8,8 @@ import { SWAGGER_PATH } from './swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   app.useLogger(app.get(Logger));
+  // Runs onModuleDestroy on SIGTERM/SIGINT, so PrismaService closes its pool.
+  app.enableShutdownHooks();
 
   const config = new DocumentBuilder()
     .setTitle('Clothes catalogue API')
