@@ -19,3 +19,9 @@ export {
   cacheHealthSchema,
   type CacheHealthDto,
 } from './cache/cache-health.dto.ts';
+export {
+  dependencyHealthSchema,
+  healthSchema,
+  type DependencyHealthDto,
+  type HealthDto,
+} from './health/health.dto.ts';

@@ -37,6 +37,8 @@ const migrations = await builder
 await builder
   .addJavaScriptApp('backend', '../..', { runScriptName: 'nest:start' })
   .withHttpEndpoint({ name: 'http', env: 'PORT' })
+  // Healthy only while GET /health reports the database and cache as reachable.
+  .withHttpHealthCheck({ path: '/health', endpointName: 'http' })
   .withUrlForEndpoint('http', async (url) => {
     url.displayText = 'Swagger UI';
     url.url = '/swagger';
