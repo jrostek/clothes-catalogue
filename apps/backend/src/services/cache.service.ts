@@ -28,9 +28,9 @@ export class CacheService {
 
   // Values are stored as JSON, so every store (in-memory included) hands back
   // a fresh copy. Dates therefore come back as ISO strings.
-  async tryGet<T>(key: string): Promise<T | null> {
+  async tryGet<T>(key: string): Promise<T | undefined> {
     const entry = await this.read<T>(key);
-    return entry.hit ? entry.value : null;
+    return entry.hit ? entry.value : undefined;
   }
 
   async set<T>(key: string, value: T, ttl?: number) {
@@ -45,8 +45,8 @@ export class CacheService {
     valueFactory: () => T | Promise<T>,
     ttl?: number,
   ): Promise<T> {
-    const entry = await this.read<T>(key);
-    if (entry.hit) return entry.value;
+    const entry = await this.tryGet<T>(key);
+    if (entry !== undefined) return entry;
 
     const value = await valueFactory();
 

@@ -41,14 +41,16 @@ describe('CacheService', () => {
       });
     });
 
-    it('returns null for a missing key', async () => {
-      expect(await moduleRef.get(CacheService).tryGet('missing')).toBeNull();
+    it('returns undefined for a missing key', async () => {
+      expect(
+        await moduleRef.get(CacheService).tryGet('missing'),
+      ).toBeUndefined();
     });
 
-    it('returns null for a value that is not JSON', async () => {
+    it('returns undefined for a value that is not JSON', async () => {
       await moduleRef.get<Cache>(CACHE_MANAGER).set('key', 'not json');
 
-      expect(await moduleRef.get(CacheService).tryGet('key')).toBeNull();
+      expect(await moduleRef.get(CacheService).tryGet('key')).toBeUndefined();
     });
   });
 
