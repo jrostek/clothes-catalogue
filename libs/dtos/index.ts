@@ -15,3 +15,7 @@ export {
   type ConnectionProbeDto,
   type CreateConnectionProbeDto,
 } from './database/connection-probe.dto.ts';
+export {
+  cacheHealthSchema,
+  type CacheHealthDto,
+} from './cache/cache-health.dto.ts';

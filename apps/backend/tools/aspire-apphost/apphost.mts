@@ -24,6 +24,8 @@ const databaseUrl = await db.uriExpression();
 
 const cache = await builder.addRedis('cache');
 
+const cacheUrl = await cache.uriExpression();
+
 // Applies pending Prisma migrations and exits; the backend starts after it.
 const migrations = await builder
   .addJavaScriptApp('db-migrations', '../..', {
@@ -42,6 +44,7 @@ await builder
   .withReference(db)
   .withReference(cache)
   .withEnvironment('DATABASE_URL', databaseUrl)
+  .withEnvironment('REDIS_URL', cacheUrl)
   .waitFor(db)
   .waitFor(cache)
   .waitForCompletion(migrations);
