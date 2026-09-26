@@ -1,9 +1,13 @@
+import './instrumentation';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
+import { SWAGGER_PATH } from './swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  app.useLogger(app.get(Logger));
 
   const config = new DocumentBuilder()
     .setTitle('Clothes catalogue API')
@@ -11,7 +15,7 @@ async function bootstrap() {
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, documentFactory);
+  SwaggerModule.setup(SWAGGER_PATH, app, documentFactory);
 
   await app.listen(process.env.PORT ?? 3000);
 }
