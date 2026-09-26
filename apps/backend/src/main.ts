@@ -9,10 +9,14 @@ async function bootstrap() {
     .setTitle('Clothes catalogue API')
     .setVersion('1.0')
     .build();
-    
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, documentFactory);
 
   await app.listen(process.env.PORT ?? 3000);
 }
-bootstrap();
+
+bootstrap().catch((err: unknown) => {
+  console.error('Failed to start the application', err);
+  process.exit(1);
+});

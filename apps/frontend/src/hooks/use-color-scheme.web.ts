@@ -8,6 +8,8 @@ export function useColorScheme() {
   const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
+    // Deliberate: flip to the real scheme only after the first client render (static rendering).
+    // oxlint-disable-next-line react/set-state-in-effect
     setHasHydrated(true);
   }, []);
 

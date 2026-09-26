@@ -2,5 +2,8 @@
   "name": "@clothes-catalogue/dtos",
   "exports": {
     ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -b"
   }
 }

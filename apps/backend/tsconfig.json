@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
+    "types": ["node", "jest"],
     "rootDir": "src",
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
     "module": "nodenext",

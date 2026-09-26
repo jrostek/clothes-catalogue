@@ -1,0 +1,84 @@
+{
+  "$schema": "../../node_modules/oxlint/configuration_schema.json",
+  // Replaces `expo lint`, which used eslint-config-expo (core + typescript +
+  // react + react-hooks + import + expo rules). jsx-a11y is new.
+  "extends": ["../../.oxlintrc.json"],
+  "plugins": ["typescript", "unicorn", "oxc", "react", "jsx-a11y", "import"],
+  "env": {
+    "browser": true,
+    "shared-node-browser": true
+  },
+  "globals": {
+    "__DEV__": "readonly",
+    "ErrorUtils": "readonly"
+  },
+  "settings": {
+    "react": { "version": "19.2" }
+  },
+  "rules": {
+    // eslint-config-expo core
+    "eslint/eqeqeq": ["warn", "smart"],
+    "eslint/no-extend-native": "warn",
+    "eslint/no-extra-bind": "warn",
+    "eslint/no-redeclare": "warn",
+    "eslint/no-unreachable": "warn",
+    "eslint/no-unsafe-negation": "warn",
+    "eslint/no-unused-expressions": ["warn", { "allowShortCircuit": true, "enforceForJSX": true }],
+    "eslint/no-unused-labels": "warn",
+    "eslint/no-unused-vars": [
+      "warn",
+      { "vars": "all", "args": "none", "ignoreRestSiblings": true, "caughtErrors": "all", "caughtErrorsIgnorePattern": "^_" }
+    ],
+    "eslint/no-useless-constructor": "warn",
+    "eslint/no-var": "error",
+    "eslint/no-with": "warn",
+    "eslint/unicode-bom": ["warn", "never"],
+
+    // eslint-config-expo import (import/recommended + import/errors)
+    "import/export": "error",
+    "import/first": "warn",
+    "import/namespace": "error",
+    "import/no-duplicates": "warn",
+    "import/no-named-as-default": "warn",
+    "import/no-named-as-default-member": "warn",
+
+    // eslint-config-expo typescript
+    "typescript/array-type": ["warn", { "default": "array" }],
+    "typescript/consistent-type-assertions": ["warn", { "assertionStyle": "as", "objectLiteralTypeAssertions": "allow" }],
+    "typescript/no-empty-object-type": "warn",
+    "typescript/no-extra-non-null-assertion": "warn",
+    "typescript/no-require-imports": [
+      "warn",
+      {
+        "allow": [
+          "\\.(aac|aiff|avif|bmp|caf|db|gif|heic|html|jpeg|jpg|json|m4a|m4v|mov|mp3|mp4|mpeg|mpg|otf|pdf|png|psd|svg|ttf|wav|webm|webp|xml|yaml|yml|zip)$"
+        ]
+      }
+    ],
+    "typescript/no-wrapper-object-types": "warn",
+
+    // eslint-config-expo react (react/recommended + react-hooks/recommended)
+    "react/display-name": "error",
+    "react/jsx-no-comment-textnodes": "error",
+    "react/no-unescaped-entities": "error",
+    "react/no-unknown-property": "warn",
+    "react/no-this-in-sfc": "warn",
+    "react/require-render-return": "error",
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "warn",
+    "react/incompatible-library": "warn",
+    "react/unsupported-syntax": "warn",
+    "react/react-in-jsx-scope": "off"
+  },
+  "overrides": [
+    {
+      // Node CommonJS helper scripts (eslint-config-expo only applied
+      // no-require-imports to TypeScript files).
+      "files": ["scripts/**/*.js"],
+      "env": { "node": true },
+      "rules": {
+        "typescript/no-require-imports": "off"
+      }
+    }
+  ]
+}

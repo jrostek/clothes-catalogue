@@ -1,0 +1,13 @@
+{
+  "$schema": "../../../../node_modules/oxlint/configuration_schema.json",
+  // Port of the AppHost's eslint.config.mjs (typescript-eslint base +
+  // no-floating-promises with checkThenables).
+  "extends": ["../../../../.oxlintrc.json"],
+  "plugins": ["typescript", "unicorn", "oxc", "node"],
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "typescript/no-floating-promises": ["error", { "checkThenables": true }]
+  }
+}

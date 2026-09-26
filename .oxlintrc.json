@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  // Shared baseline for every project. Each project has its own .oxlintrc.json
+  // that extends this file and adds its plugins, environment and rule choices.
+  "plugins": ["typescript", "unicorn", "oxc"],
+  "categories": {
+    "correctness": "error"
+  },
+  "options": {
+    // Type-aware rules run through oxlint-tsgolint on the TypeScript 7 compiler.
+    "typeAware": true
+  },
+  "rules": {
+    "eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+  },
+  "ignorePatterns": [
+    "**/dist/**",
+    "**/coverage/**",
+    "**/.expo/**",
+    "**/.aspire/**",
+    "**/expo-env.d.ts"
+  ]
+}
