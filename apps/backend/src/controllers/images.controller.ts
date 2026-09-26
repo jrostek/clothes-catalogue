@@ -4,7 +4,7 @@ import {
   NotImplementedException,
   Post,
 } from '@nestjs/common';
-import type { CreateImageDto } from '@clothes-catalogue/dtos';
+import { CreateImageDto } from '../dtos/images/create-image.dto';
 
 @Controller('images')
 export class ImagesController {

@@ -7,11 +7,17 @@ import {
   Post,
   ServiceUnavailableException,
 } from '@nestjs/common';
-import type {
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiServiceUnavailableResponse,
+} from '@nestjs/swagger';
+import {
   ConnectionProbeDto,
   CreateConnectionProbeDto,
-  DatabaseHealthDto,
-} from '@clothes-catalogue/dtos';
+} from '../dtos/database/connection-probe.dto';
+import { DatabaseHealthDto } from '../dtos/database/database-health.dto';
 import { DatabaseService } from '../services/database.service';
 
 // Test endpoints for checking the database connection end to end.
@@ -22,6 +28,8 @@ export class DatabaseController {
   constructor(private readonly databaseService: DatabaseService) {}
 
   @Get('health')
+  @ApiOkResponse({ type: DatabaseHealthDto })
+  @ApiServiceUnavailableResponse({ description: 'Database unreachable' })
   async getHealth(): Promise<DatabaseHealthDto> {
     try {
       return await this.databaseService.getHealth();
@@ -34,11 +42,14 @@ export class DatabaseController {
   }
 
   @Get('probes')
+  @ApiOkResponse({ type: [ConnectionProbeDto] })
   listProbes(): Promise<ConnectionProbeDto[]> {
     return this.databaseService.listProbes();
   }
 
   @Post('probes')
+  @ApiCreatedResponse({ type: ConnectionProbeDto })
+  @ApiBadRequestResponse({ description: 'message is missing or empty' })
   createProbe(
     @Body() body: CreateConnectionProbeDto,
   ): Promise<ConnectionProbeDto> {
